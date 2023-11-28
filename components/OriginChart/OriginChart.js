@@ -15,7 +15,7 @@ function OriginChart({ originData }) {
   }, []);
 
   React.useEffect(() => {
-    if (chartInstanceRef.current) {
+    if (chartInstanceRef.current && originData) {
       originData.forEach((data, index) => {
         chartInstanceRef.current.data.datasets[0].data[index] = data[0];
         chartInstanceRef.current.data.datasets[1].data[index] = data[1];
@@ -29,6 +29,10 @@ function OriginChart({ originData }) {
 
 
   function setOrigin(originData) {
+    if (!originData) {
+      return;
+    }
+
     // Transposing the data for Chart.js datasets
     let accept = [],
       dismiss = [],

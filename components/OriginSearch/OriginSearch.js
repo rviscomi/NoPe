@@ -48,7 +48,7 @@ function OriginSearch({ data, selectedOrigin, setSelectedOrigin }) {
 
       <datalist id={originListId}>{
         origins.map(origin => (
-          <option value={origin}>{origin}</option>
+          <option key={origin} value={origin}>{origin}</option>
         ))
       }</datalist>
     </>
