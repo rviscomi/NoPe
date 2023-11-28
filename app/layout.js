@@ -14,6 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Script
+          id="chart.js"
           src="https://cdn.jsdelivr.net/npm/chart.js"
           strategy="beforeInteractive">
         </Script>
