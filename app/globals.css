@@ -96,7 +96,7 @@ body {
 }
 
 a {
-  color: inherit;
+  color: rgb(251, 188, 4);
   text-decoration: none;
 }
 
@@ -104,4 +104,29 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+header {
+  margin-bottom: 40px;
+  padding: 1rem 2rem;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+h1 small {
+  display: block;
+  font-size: 0.5em;
+  font-weight: normal;
+  color: rgb(var(--foreground-rgb));
+}
+
+main {
+  padding: 2rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+canvas {
+  margin: 2rem 0;
 }
