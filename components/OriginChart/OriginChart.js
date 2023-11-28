@@ -2,51 +2,50 @@
 
 import React from 'react';
 
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend,
+  Filler
+);
+
 function OriginChart({ originData }) {
-  const chartRef = React.useRef(null);
-  const chartInstanceRef = React.useRef(null);
+  if (!originData) {
+    return;
+  }
 
-  React.useEffect(() => {
-    setOrigin(originData);
+  let accept = [],
+    dismiss = [],
+    deny = [],
+    ignore = [];
+  originData.forEach((data) => {
+    accept.push(data[0]);
+    dismiss.push(data[1]);
+    deny.push(data[2]);
+    ignore.push(data[3]);
+  });
 
-    return(() => {
-      chartInstanceRef.current.destroy();
-    });
-  }, []);
-
-  React.useEffect(() => {
-    if (chartInstanceRef.current && originData) {
-      originData.forEach((data, index) => {
-        chartInstanceRef.current.data.datasets[0].data[index] = data[0];
-        chartInstanceRef.current.data.datasets[1].data[index] = data[1];
-        chartInstanceRef.current.data.datasets[2].data[index] = data[2];
-        chartInstanceRef.current.data.datasets[3].data[index] = data[3];
-      });
-  
-      chartInstanceRef.current.update();
-    }
-  }, [originData]);
-
-
-  function setOrigin(originData) {
-    if (!originData) {
-      return;
-    }
-
-    // Transposing the data for Chart.js datasets
-    let accept = [],
-      dismiss = [],
-      deny = [],
-      ignore = [];
-    originData.forEach((data) => {
-      accept.push(data[0]);
-      dismiss.push(data[1]);
-      deny.push(data[2]);
-      ignore.push(data[3]);
-    });
-
-    // Creating the datasets
-    const datasets = [
+  const data = {
+    labels: Array.from({ length: originData.length }, (_, i) =>
+      indexToMonth(i + 1)
+    ),
+    datasets: [
       {
         label: "Accept",
         data: accept,
@@ -54,7 +53,7 @@ function OriginChart({ originData }) {
         fill: true,
         pointRadius: 0,
         pointHitRadius: 10,
-        stack: "Stack 0",
+        stack: "Stack 0"
       },
       {
         label: "Dismiss",
@@ -63,7 +62,7 @@ function OriginChart({ originData }) {
         fill: true,
         pointRadius: 0,
         pointHitRadius: 10,
-        stack: "Stack 0",
+        stack: "Stack 0"
       },
       {
         label: "Deny",
@@ -72,7 +71,7 @@ function OriginChart({ originData }) {
         fill: true,
         pointRadius: 0,
         pointHitRadius: 10,
-        stack: "Stack 0",
+        stack: "Stack 0"
       },
       {
         label: "Ignore",
@@ -81,55 +80,41 @@ function OriginChart({ originData }) {
         fill: true,
         pointRadius: 0,
         pointHitRadius: 10,
-        stack: "Stack 0",
+        stack: "Stack 0"
       },
-    ];
+    ]
+  };
 
-    // Setting up the chart options
-    const options = {
-      scales: {
-        x: {
-          stacked: true,
-        },
-        y: {
-          stacked: true,
-          max: 100,
-          min: 0,
-          ticks: {
-            callback: (value) => {
-              return value + "%";
-            },
+  const options = {
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true,
+        max: 100,
+        min: 0,
+        ticks: {
+          callback: (value) => {
+            return value + "%";
           },
         },
       },
-      plugins: {
-        tooltip: {
-          callbacks: {
-            label: (context) => {
-              const label = context.dataset.label || "";
-              const value = context.parsed.y;
-              return label + ": " + value + "%";
-            },
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            const label = context.dataset.label || "";
+            const value = context.parsed.y;
+            return label + ": " + value + "%";
           },
         },
       },
-    };
+    },
+  };
 
-    // Selecting the canvas element and creating the chart
-    const ctx = chartRef.current.getContext("2d");
-    chartInstanceRef.current = new window['Chart'](ctx, {
-      type: "line",
-      data: {
-        labels: Array.from({ length: originData.length }, (_, i) =>
-          indexToMonth(i + 1)
-        ),
-        datasets: datasets,
-      },
-      options: options,
-    });
-  }
-
-  return <canvas ref={chartRef}></canvas>;
+  return <Line options={options} data={data} />
 }
 
 function indexToMonth(index) {
