@@ -8,7 +8,8 @@ import OriginSearch from '../OriginSearch';
 import OriginChart from '../OriginChart';
 
 function OriginNoPe() {
-  const [selectedOrigin, setSelectedOrigin] = React.useState('https://app.slack.com');
+  const defaultOrigin = 'https://app.slack.com';
+  const [selectedOrigin, setSelectedOrigin] = React.useState(defaultOrigin);
   const originData = data[selectedOrigin];
 
   return (

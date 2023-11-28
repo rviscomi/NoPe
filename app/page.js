@@ -1,7 +1,6 @@
 import OriginNoPe from '../components/OriginNoPe';
 
 export default function Home() {
-
   return (
     <main>
       <OriginNoPe />
