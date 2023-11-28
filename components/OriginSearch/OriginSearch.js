@@ -18,12 +18,17 @@ function OriginSearch({ data, selectedOrigin, setSelectedOrigin }) {
           e.preventDefault();
           setSelectedOrigin(origin);
         }}
-        >
+      >
         <input
           className={styles.selectedOrigin}
           value={origin}
           onChange={(e) => {
             setOrigin(e.target.value);
+
+            // Selecting from a datalist has no inputType
+            if (!e.nativeEvent.inputType) {
+              setSelectedOrigin(e.target.value);
+            }
           }}
           onBlur={(e) => {
             setSelectedOrigin(e.target.value);
